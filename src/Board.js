@@ -81,7 +81,7 @@
       var array = this.get(rowIndex);
       Newarray = array.filter(function (val) {
         return val === 1;
-      })
+      });
       return Newarray.length > 1 ? true : false;
       // return false; // fixme
     },
@@ -89,7 +89,7 @@
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function () {
       var array = this.rows();
-      console.log(array);
+      // console.log(array);
       array.forEach((element, i) => {
         if (this.hasRowConflictAt(i)) {
           return true;
@@ -106,16 +106,16 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function (colIndex) {
-      debugger;
+      // debugger;
       var array = this.rows();
       var length = array.length;
       var newArray = [];
       for (var i = 0; i < length; i++) {
-        console.log(array[i][colIndex]);
+        // console.log(array[i][colIndex]);
         newArray.push(array[i][colIndex]);
       }
       newArray1 = newArray.filter(function (val) {
-        return val === 1
+        return (val === 1);
       });
       //console.log(newArray1);
       return newArray1.length > 1 ? true : false;
@@ -125,6 +125,12 @@
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function () {
+      var arr = this.rows();
+      for (var i = 0; i < arr.length; i++) {
+        if (this.hasColConflictAt(i)) {
+          return true;
+        }
+      }
       return false; // fixme
     },
 
@@ -135,7 +141,18 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function (majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var rowsArr = this.rows();
+      var arr = [];
+      var j = majorDiagonalColumnIndexAtFirstRow;
+      for (var i = 0; i < rowsArr.length; i++) {
+        arr.push(rowsArr[i][j]);
+        j++
+      }
+      return arr.filter(function (val) {
+        return val === 1;
+      }).length > 1 ? true : false;
+
+      // return false; // fixme
     },
 
     // test if any major diagonals on this board contain conflicts
