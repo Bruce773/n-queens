@@ -142,7 +142,6 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function (majorDiagonalColumnIndexAtFirstRow) {
-      debugger;
       var rowsArr = this.rows();
       var arr = [];
       var j = majorDiagonalColumnIndexAtFirstRow;
@@ -152,7 +151,6 @@
         }
         j++
       }
-      console.log(arr);
       var arrNew = arr.filter(function (val) {
         return val === 1;
       });
