@@ -60,6 +60,7 @@ window.countNRooksSolutions = function (n) {
 window.findNQueensSolution = function (n) {
   var solution = new Board({ 'n': n }); //fixme
   this.GetNoConflictQueenBoardIterration(solution, 0);
+  //this.GetNoConflictQueenBoard(solution, 0);
   debugger;
   console.log(solution);
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
@@ -101,7 +102,7 @@ window.GetNoConflictQueenBoard = function (board, col) {
             }
           } else {
             board.attributes[index][col] = 1;
-            index = 4;
+            index = length;
           }
         }
         //board.attributes[currentRowQueenIndex + 1][col] = 1;
@@ -132,7 +133,6 @@ window.GetNoConflictQueenBoard = function (board, col) {
   }
   // this is base case when I get out of thz
   return true;
-
 }
 
 window.GetNoConflictQueenBoardIterration = function (board, col) {
