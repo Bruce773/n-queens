@@ -59,7 +59,8 @@ window.countNRooksSolutions = function (n) {
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function (n) {
   var solution = new Board({ 'n': n }); //fixme
-  this.GetNoConflictQueenBoard(solution, 0);
+  this.GetNoConflictQueenBoardIterration(solution, 0);
+  debugger;
   console.log(solution);
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
@@ -121,7 +122,7 @@ window.GetNoConflictQueenBoard = function (board, col) {
             if (GetNoConflictQueenBoard(board, col - 1) === true)
               return true;
           }
-        } // No conflict go to next col 
+        } // No conflict go to next col and recursilvely call the fucntion 
         else {
           if (GetNoConflictQueenBoard(board, col + 1) === true)
             return true;
@@ -129,8 +130,78 @@ window.GetNoConflictQueenBoard = function (board, col) {
       }
     }
   }
-  debugger;
+  // this is base case when I get out of thz
   return true;
+
+}
+
+window.GetNoConflictQueenBoardIterration = function (board, col) {
+  var length = board.attributes[0].length;
+
+  while (col < length && col > -1) {
+    // check if a queen is already present at that column
+    var checkQueenIndex = this.GetCurrentRowIndex(board.attributes, col, length)
+    // queen present at that colum
+    if (checkQueenIndex !== -1) {
+      // remove the queen at the index
+      board.attributes[checkQueenIndex][col] = 0;
+      //check if the queen present was on the last row then go to previous col
+      if (checkQueenIndex === length - 1) {
+        col -= 1;
+      }// else move queen one row ahead
+      else {
+        //increament row index
+        var increamentedIndex = checkQueenIndex + 1;
+        // place the queen
+        board.attributes[increamentedIndex][col] = 1;
+        // now check that current queen has conflcits 
+        while (increamentedIndex < length) {
+          //check if board has conflict
+          if (board.hasAnyQueenConflictsOn(increamentedIndex, col)) {
+            //replace the queen
+            board.attributes[increamentedIndex][col] = 0;
+            // check if queen is place at last row in the col then reduce the col
+            if (increamentedIndex === length - 1) {
+              col -= 1;
+              increamentedIndex = length;
+            }//else move one more downwards and increament the index and check again
+            else {
+              increamentedIndex++;
+              board.attributes[increamentedIndex][col] = 1;
+            }
+          } // end if for confilct
+          // if board does not have conflict
+          else {
+            board.attributes[increamentedIndex][col] = 1;
+            col += 1;
+            increamentedIndex = length;
+          } // end else for no conflcit
+        } // end the while loop for row check 
+      } // end else  if index not present at last position
+    } // end if for checking index
+
+    // no queen present in that col
+    else {
+      //loop over each row index 
+      for (var i = 0; i < length; i++) {
+        //place the queen at row col location
+        board.attributes[i][col] = 1;
+        //check conflict
+        if (board.hasAnyQueenConflictsOn(i, col)) {
+          //toggle the value
+          board.attributes[i][col] = 0;
+          // check if the current queen is on the last row and then go previous col
+          if (i === length - 1) {
+            col -= 1;
+          }
+        } // No conflict go to next col and recursilvely call the fucntion 
+        else {
+          col += 1;
+          i = length;
+        }
+      } //end for loop
+    }
+  } // end while loop
 
 }
 
